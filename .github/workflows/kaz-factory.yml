@@ -13,6 +13,10 @@ on:
         default: none
   schedule:
     - cron: '15 0 * * *'
+  push:
+    paths:
+      - 'kaz-factory/**'
+      - '.github/workflows/kaz-factory.yml'
 permissions:
   contents: read
 concurrency:
