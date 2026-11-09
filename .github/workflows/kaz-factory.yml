@@ -1,0 +1,49 @@
+name: KAZ Factory V4
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Number of draft videos (1-50)"
+        required: true
+        default: "1"
+      voice:
+        description: "none or edge (online Vietnamese TTS)"
+        type: choice
+        options: [none, edge]
+        default: none
+  schedule:
+    - cron: '15 0 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: kaz-video-factory
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: kaz-factory/requirements.txt
+      - name: Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          python -m pip install -r kaz-factory/requirements.txt
+      - name: Render drafts
+        env:
+          COUNT: ${{ github.event.inputs.count || '1' }}
+          VOICE: ${{ github.event.inputs.voice || 'none' }}
+        run: |
+          python kaz-factory/factory.py --count "$COUNT" --voice "$VOICE" --burn-subs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kaz-video-drafts-${{ github.run_number }}
+          path: output/
+          retention-days: 7
+          if-no-files-found: warn
