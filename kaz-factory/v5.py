@@ -37,7 +37,14 @@ def get_media(query,seen):
         if page.get("title") in seen:continue
         options.append((page,info,url,license_name))
     if not options:raise RuntimeError("No eligible licensed photograph for: "+query)
-    return random.choice(options[:10])
+    # Deterministic ranking; avoid unrelated random photos.
+    terms=[w.lower() for w in re.findall(r"[a-zA-Z]+",query) if len(w)>3]
+    def score(entry):
+        page=entry[0]
+        title=page.get("title","").lower()
+        return sum(3 for w in terms if w in title)
+    options.sort(key=lambda entry:(-score(entry),entry[0].get("title","")))
+    return options[0]
 
 def download_photo(query,path,seen):
     page,info,url,license_name=get_media(query,seen)
@@ -123,12 +130,19 @@ def thumb(image,title,path):
         d.text((35,610+j*62),line,font=font(40),fill="white",stroke_width=3,stroke_fill=(0,0,0))
     im.convert("RGB").save(path,quality=92)
 
-def render_scenes(images,out,seconds):
+def scene_durations(scenes,total):
+    # Scene length follows narration length, not equal slices.
+    weights=[max(10,len(scene["narration"].split())) for scene in scenes]
+    lengths=[total*w/sum(weights) for w in weights]
+    return lengths
+
+def render_scenes(images,out,seconds,scene_lengths):
     # 6 moving scenes with crossfades, 0.45 second overlap.
-    n=len(images);transition=.45;clip_len=(seconds+(n-1)*transition)/n
+    n=len(images);transition=.35
+    lengths=[x+transition if i<n-1 else x for i,x in enumerate(scene_lengths)]
     inputs=[]
-    for image in images:
-        inputs+=["-loop","1","-framerate","20","-t",f"{clip_len:.3f}","-i",str(image)]
+    for image,length in zip(images,lengths):
+        inputs+=["-loop","1","-framerate","20","-t",f"{length:.3f}","-i",str(image)]
     filters=[]
     for i in range(n):
         # Alternating subtle Ken Burns crop with safe dimensions.
@@ -138,7 +152,7 @@ def render_scenes(images,out,seconds):
     prev="v0"
     for i in range(1,n):
         label=f"x{i}"
-        offset=i*(clip_len-transition)
+        offset=sum(scene_lengths[:i])
         filters.append(f"[{prev}][v{i}]xfade=transition=fade:duration={transition}:offset={offset:.3f}[{label}]")
         prev=label
     cmd(["ffmpeg","-y","-hide_banner","-loglevel","error",*inputs,"-filter_complex",";".join(filters),
@@ -165,23 +179,39 @@ def main():
     manifest=[]
     for i,topic in enumerate(topics[:args.count]):
         work=out/f"video_{i+1:03}";work.mkdir(exist_ok=True)
-        (work/"script.txt").write_text(topic["narration"],encoding="utf-8")
+        scenes=topic["scenes"]
+        narration=" ".join(scene["narration"] for scene in scenes)
+        (work/"script.txt").write_text(narration,encoding="utf-8")
         voice=work/"voice.mp3"
-        asyncio.run(make_voice(topic["narration"],voice))
+        asyncio.run(make_voice(narration,voice))
         speech=duration(voice)
         if speech>args.duration:
             raise RuntimeError(f"Narration {speech:.1f}s exceeds {args.duration}s; increase duration or shorten script")
         # Align visuals and subtitles with spoken narration, allowing a final visual hold.
         seen=set();images=[];credits=[]
-        for j,query in enumerate(topic["queries"][:6]):
+        for j,scene in enumerate(scenes):
+            query=scene["query"]
             image=work/f"scene_{j+1:02}.jpg"
-            credits.append(download_photo(query,image,seen))
+            credit=download_photo(query,image,seen)
+            # Reject clearly off-topic search results instead of quietly showing them.
+            name=credit["title"].lower()
+            if not any(k.lower() in name for k in scene["keywords"]):
+                raise RuntimeError(f"Scene {j+1} mismatch: expected {scene['visual']}, got {credit['title']}")
+            credit.update({"scene":j+1,"narration":scene["narration"],"visual_intent":scene["visual"]})
+            credits.append(credit)
             images.append(image)
         (work/"attribution.json").write_text(json.dumps(credits,ensure_ascii=False,indent=2),encoding="utf-8")
-        subtitles(topic["narration"],work/"karaoke.ass",speech)
+        subtitles(narration,work/"karaoke.ass",speech)
+        lengths=scene_durations(scenes,args.duration)
+        timeline=[];cursor=0
+        for j,(scene,length) in enumerate(zip(scenes,lengths)):
+            timeline.append({"scene":j+1,"start":round(cursor,2),"end":round(cursor+length,2),
+                             "narration":scene["narration"],"visual":scene["visual"]})
+            cursor+=length
+        (work/"scene_timeline.json").write_text(json.dumps(timeline,ensure_ascii=False,indent=2),encoding="utf-8")
         thumb(images[0],topic["title"],work/"thumbnail.jpg")
         silent=work/"scenes.mp4"
-        render_scenes(images,silent,args.duration)
+        render_scenes(images,silent,args.duration,lengths)
         mux(silent,voice,work/"karaoke.ass",work/"video.mp4",args.duration)
         silent.unlink()
         item={"title":topic["title"],"video":str(work/"video.mp4"),"thumbnail":str(work/"thumbnail.jpg"),
