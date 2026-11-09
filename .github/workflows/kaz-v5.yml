@@ -1,0 +1,53 @@
+name: KAZ V5 Cinematic
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Videos (1-2 prepared topics)"
+        required: true
+        default: "1"
+      duration:
+        description: "Target seconds"
+        required: true
+        default: "45"
+  schedule:
+    - cron: '35 0 * * *'
+  push:
+    paths:
+      - 'kaz-factory/v5.py'
+      - 'kaz-factory/v5_topics.json'
+      - '.github/workflows/kaz-v5.yml'
+permissions:
+  contents: read
+concurrency:
+  group: kaz-v5-cinematic
+  cancel-in-progress: false
+jobs:
+  cinematic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: kaz-factory/requirements.txt
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          python -m pip install -r kaz-factory/requirements.txt
+      - name: Render six-scene cinematic drafts
+        env:
+          COUNT: ${{ github.event.inputs.count || '1' }}
+          DURATION: ${{ github.event.inputs.duration || '45' }}
+        run: |
+          python kaz-factory/v5.py --count "$COUNT" --duration "$DURATION"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kaz-v5-cinematic-${{ github.run_number }}
+          path: output-v5/
+          retention-days: 7
+          if-no-files-found: warn

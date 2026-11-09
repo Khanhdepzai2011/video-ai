@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Vì sao bầu trời có màu xanh?",
+    "narration": "Bầu trời có màu xanh không phải vì không khí có màu xanh. Ánh sáng Mặt Trời chứa nhiều màu sắc khác nhau. Khi đi qua khí quyển, ánh sáng xanh bị các phân tử khí tán xạ mạnh hơn ánh sáng đỏ. Vì thế, từ mặt đất, chúng ta nhìn thấy ánh sáng xanh đến từ nhiều hướng. Vào lúc hoàng hôn, ánh sáng phải đi qua lớp khí quyển dày hơn. Phần lớn ánh sáng xanh đã bị tán xạ khỏi đường nhìn, nên sắc đỏ và cam trở nên nổi bật. Một hiện tượng quen thuộc, nhưng ẩn sau là vật lý ánh sáng.",
+    "queries": [
+      "blue sky cumulus clouds",
+      "sunlight through clouds",
+      "blue atmosphere sky",
+      "sunset orange sky",
+      "sky science cloud",
+      "sunrise horizon"
+    ]
+  },
+  {
+    "title": "Vì sao đại dương trông có màu xanh?",
+    "narration": "Đại dương không chỉ phản chiếu màu của bầu trời. Nước hấp thụ ánh sáng đỏ mạnh hơn ánh sáng xanh, đặc biệt khi ánh sáng đi sâu xuống dưới. Phần ánh sáng xanh còn lại có thể bị tán xạ và quay về mắt người quan sát. Tuy nhiên, màu nước thay đổi theo độ sâu, cát, phù sa và sinh vật phù du. Vì vậy, có nơi nước xanh thẫm, có nơi lại xanh ngọc hoặc nâu đục. Chỉ một màu nước thôi cũng có thể kể câu chuyện về môi trường bên dưới.",
+    "queries": [
+      "ocean aerial blue water",
+      "sea waves blue",
+      "underwater sunlight ocean",
+      "turquoise tropical water",
+      "deep blue sea",
+      "ocean coastline aerial"
+    ]
+  }
+]
