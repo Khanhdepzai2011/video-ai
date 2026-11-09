@@ -1,26 +1,128 @@
 [
   {
     "title": "Vì sao bầu trời có màu xanh?",
-    "narration": "Bầu trời có màu xanh không phải vì không khí có màu xanh. Ánh sáng Mặt Trời chứa nhiều màu sắc khác nhau. Khi đi qua khí quyển, ánh sáng xanh bị các phân tử khí tán xạ mạnh hơn ánh sáng đỏ. Vì thế, từ mặt đất, chúng ta nhìn thấy ánh sáng xanh đến từ nhiều hướng. Vào lúc hoàng hôn, ánh sáng phải đi qua lớp khí quyển dày hơn. Phần lớn ánh sáng xanh đã bị tán xạ khỏi đường nhìn, nên sắc đỏ và cam trở nên nổi bật. Một hiện tượng quen thuộc, nhưng ẩn sau là vật lý ánh sáng.",
-    "queries": [
-      "blue sky cumulus clouds",
-      "sunlight through clouds",
-      "blue atmosphere sky",
-      "sunset orange sky",
-      "sky science cloud",
-      "sunrise horizon"
+    "scenes": [
+      {
+        "narration": "Bầu trời có màu xanh không phải vì không khí có màu xanh.",
+        "query": "clear blue daytime sky",
+        "keywords": [
+          "sky",
+          "blue"
+        ],
+        "visual": "Bầu trời xanh giữa ban ngày"
+      },
+      {
+        "narration": "Ánh sáng Mặt Trời chứa nhiều màu sắc khác nhau.",
+        "query": "sunlight sun rays sky",
+        "keywords": [
+          "sun",
+          "light"
+        ],
+        "visual": "Ánh sáng Mặt Trời"
+      },
+      {
+        "narration": "Khi đi qua khí quyển, ánh sáng xanh bị các phân tử khí tán xạ mạnh hơn ánh sáng đỏ.",
+        "query": "earth atmosphere from space",
+        "keywords": [
+          "atmosphere",
+          "earth"
+        ],
+        "visual": "Khí quyển Trái Đất"
+      },
+      {
+        "narration": "Vì thế, từ mặt đất, chúng ta nhìn thấy ánh sáng xanh đến từ nhiều hướng.",
+        "query": "clear blue sky panorama",
+        "keywords": [
+          "blue",
+          "sky"
+        ],
+        "visual": "Bầu trời xanh nhìn từ mặt đất"
+      },
+      {
+        "narration": "Vào lúc hoàng hôn, ánh sáng phải đi qua lớp khí quyển dày hơn. Phần lớn ánh sáng xanh đã bị tán xạ khỏi đường nhìn, nên sắc đỏ và cam trở nên nổi bật.",
+        "query": "orange red sunset sky horizon",
+        "keywords": [
+          "sunset",
+          "orange",
+          "red"
+        ],
+        "visual": "Hoàng hôn đỏ cam"
+      },
+      {
+        "narration": "Một hiện tượng quen thuộc, nhưng ẩn sau là vật lý ánh sáng.",
+        "query": "sunrise sky sunlight horizon",
+        "keywords": [
+          "sunrise",
+          "sky",
+          "light"
+        ],
+        "visual": "Ánh sáng trên đường chân trời"
+      }
     ]
   },
   {
     "title": "Vì sao đại dương trông có màu xanh?",
-    "narration": "Đại dương không chỉ phản chiếu màu của bầu trời. Nước hấp thụ ánh sáng đỏ mạnh hơn ánh sáng xanh, đặc biệt khi ánh sáng đi sâu xuống dưới. Phần ánh sáng xanh còn lại có thể bị tán xạ và quay về mắt người quan sát. Tuy nhiên, màu nước thay đổi theo độ sâu, cát, phù sa và sinh vật phù du. Vì vậy, có nơi nước xanh thẫm, có nơi lại xanh ngọc hoặc nâu đục. Chỉ một màu nước thôi cũng có thể kể câu chuyện về môi trường bên dưới.",
-    "queries": [
-      "ocean aerial blue water",
-      "sea waves blue",
-      "underwater sunlight ocean",
-      "turquoise tropical water",
-      "deep blue sea",
-      "ocean coastline aerial"
+    "scenes": [
+      {
+        "narration": "Đại dương không chỉ phản chiếu màu của bầu trời.",
+        "query": "blue ocean sea surface aerial",
+        "keywords": [
+          "ocean",
+          "sea",
+          "blue"
+        ],
+        "visual": "Mặt biển xanh nhìn từ trên cao"
+      },
+      {
+        "narration": "Nước hấp thụ ánh sáng đỏ mạnh hơn ánh sáng xanh, đặc biệt khi ánh sáng đi sâu xuống dưới.",
+        "query": "underwater sun rays ocean",
+        "keywords": [
+          "underwater",
+          "sun",
+          "water"
+        ],
+        "visual": "Ánh sáng xuyên xuống nước"
+      },
+      {
+        "narration": "Phần ánh sáng xanh còn lại có thể bị tán xạ và quay về mắt người quan sát.",
+        "query": "deep blue ocean water underwater",
+        "keywords": [
+          "blue",
+          "water",
+          "ocean"
+        ],
+        "visual": "Sắc xanh dưới đại dương"
+      },
+      {
+        "narration": "Tuy nhiên, màu nước thay đổi theo độ sâu, cát, phù sa và sinh vật phù du.",
+        "query": "turquoise shallow ocean sandy seabed",
+        "keywords": [
+          "turquoise",
+          "sea",
+          "water"
+        ],
+        "visual": "Nước biển xanh ngọc ở vùng nông"
+      },
+      {
+        "narration": "Vì vậy, có nơi nước xanh thẫm, có nơi lại xanh ngọc hoặc nâu đục.",
+        "query": "ocean coastline blue turquoise water",
+        "keywords": [
+          "ocean",
+          "coast",
+          "water"
+        ],
+        "visual": "Sự khác biệt màu nước biển"
+      },
+      {
+        "narration": "Chỉ một màu nước thôi cũng có thể kể câu chuyện về môi trường bên dưới.",
+        "query": "underwater coral reef blue ocean",
+        "keywords": [
+          "reef",
+          "underwater",
+          "coral"
+        ],
+        "visual": "Môi trường sống dưới biển"
+      }
     ]
   }
 ]
