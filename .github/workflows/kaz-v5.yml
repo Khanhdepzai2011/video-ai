@@ -12,6 +12,11 @@ on:
         default: "45"
   schedule:
     - cron: '35 0 * * *'
+  push:
+    paths:
+      - 'kaz-factory/v5.py'
+      - 'kaz-factory/v5_topics.json'
+      - '.github/workflows/kaz-v5.yml'
 permissions:
   contents: read
 concurrency:
